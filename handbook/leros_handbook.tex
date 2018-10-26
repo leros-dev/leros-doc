@@ -459,15 +459,21 @@ Minimal resource consumption can be achieved by an accumulator design. Only a si
 
 \chapter{Testing}
 
+Generating LLVM code:
+
+\begin{verbatim}
+clang -S -emit-llvm x.c
+\end{verbatim}
+
 To generate test cases use \url{https://godbolt.org/} with options -emit-llvm to emit LLVM code,
 which then can be compiled with \code{llc}:
 
+In build-leros-llvm-Clang-release/bin/ you will find llc, the llvm IR compiler
+
 \begin{verbatim}
-Run build.sh in /leros-llvm/
-in build-leros-llvm-Clang-release/bin/ you will find llc, the llvm IR compiler
-run ./llc -march=leros32 triangle.ll --filetype=asm
-This should produce triangle.s, which contains the compiled function in Leros assembly language. 
+./llc -march=leros32 triangle.ll --filetype=asm
 \end{verbatim}
+This should produce triangle.s, which contains the compiled function in Leros assembly language. 
 
 an example input would be:
 
