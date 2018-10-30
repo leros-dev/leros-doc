@@ -104,6 +104,7 @@ quite some overhead (of 1/2 and instruction).
 An additional option is to use more than 8 bits of the instruction for branches. We have quite some
 space in the instruction encoding. The same issue could be discussed for immediate constants.
 I hope we can have some interesting discussion/writing on those tradeoffs in this document.}
+\item \morten{I was wondering about the PC register in the Leros processor. Is this synthesized to be 31 or 32 bits long? I assume that it could be inferred to be 31 bits long since we always assume that instructions are halfword aligned.}
 \end{itemize}
 
 \subsection{Using LLVM for atypical architectures (stack/accumulator/etc. based - everything thats not 3-operand ISAs)}
