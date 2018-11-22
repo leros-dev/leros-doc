@@ -120,9 +120,14 @@ I hope we can have some interesting discussion/writing on those tradeoffs in thi
 \begin{itemize}
 \item We should be relaxed on compatibility with Leros 1. It is nor widely used, so we can move on
 with incompatible changes. Just keep the spirit of the original Leros design.
-\item Cost/benefit of arithmetic shift right
+\item Cost/benefit of: 
+\begin{itemize}
+    \item arithmetic shift right
+    \item compare and set (setCC in llvm)
+    \item Unsigned comparison frequency
+\end{itemize}
 \item With tighter encoding we could have up to a 15-bit constant and/or wider branches
-\item 
+\item constant pool lowering; oftentimes build masks in custom emissions - these should be placed in a constant pool.
 \item 
 \item 
 \item 
@@ -569,6 +574,8 @@ We plan to use Leros for experiments with a ring-based network-on-chip~\cite{jop
 \subsection{Software Tools}
 
 We started with a simple assembler written in Java with some reuse of code from the JOP project~\cite{jop:jnl:jsa2007}. Later we adapted the lexer and grammar tool ANTLR~\cite{antlr:1995} for the assembler. Using the parser generator ANTLR might sound like an overkill for the implementation of an assembler. However, the simplicity of defining a grammar enables the implementation of a  higher level assembler, which can simplify assembler programming. Furthermore, we started to retarget the muvium Java compiler\footnote{\url{http://www.muvium.com/}} for Leros. Muvium is optimized to compile simplified Java for resource-constrained microcontrollers, such as Microchip processors. Therefore, this compiler is an ideal tool for Leros.
+
+\subsection{The Leros Regression Test Framework
 
 \section{Evaluation}
 \label{sec:eval}
