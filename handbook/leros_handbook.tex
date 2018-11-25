@@ -105,6 +105,8 @@ An additional option is to use more than 8 bits of the instruction for branches.
 space in the instruction encoding. The same issue could be discussed for immediate constants.
 I hope we can have some interesting discussion/writing on those tradeoffs in this document.}
 \item \morten{I was wondering about the PC register in the Leros processor. Is this synthesized to be 31 or 32 bits long? I assume that it could be inferred to be 31 bits long since we always assume that instructions are halfword aligned.}
+\martin{Yes, that is a common ``optimization'' I usually do. But I slowly change my mind that this thinking in
+words or halfwords for the PC is really not worth the optimization of 1 or 2 bits.}
 \end{itemize}
 
 \subsection{Using LLVM for atypical architectures (stack/accumulator/etc. based - everything thats not 3-operand ISAs)}
@@ -283,7 +285,7 @@ Instructions are 16 bits wide. The higher byte is used to encode the instruction
 
 
 
-For example 00001001.00000010 is an add immediate instruction that adds 2 to the accumulator, where 00001000.00000011 adds the content of R3 to the accumulator. For branches we use 3 of the instruction bits
+For example 00001001.00000010 is an add immediate instruction that adds 2 to the accumulator, where 00001000.00000011 adds the content of R3 to the accumulator. For branches we use 4 of the instruction bits
 for larger offsets.
 
 \section{List of Instructions}
@@ -294,33 +296,39 @@ Not all instruction bits are currently used (unused are marked with -). Bit 0 se
 
 \begin{verbatim}
 +--------+----------+
-|00000--i| nop      |
-|000010-i| add      |
-|000011-i| sub      |
-|00010--i| shr      |
-|00011--i| unused   |
-|0010000i| load     |
-|0010001i| and      |
-|0010010i| or       |
-|0010011i| xor      |
-|00101--i| loadh    |
-|00110--i| store    |
-|001110-i| out      |
-|000001-i| in       |
+|00000---| nop      |
+|000010-0| add      |
+|000010-1| addi     |
+|000011-0| sub      |
+|000011-1| subi     |
+|00010---| shr      |
+|00011---| -        |
+|00100000| load     |
+|00100000| load i   |
+|00100010| and      |
+|00100011| andi     |
+|00100100| or       |
+|00100101| ori      |
+|00100110| xor      |
+|00100111| xori     |
+|00101001| loadhi   |
+|00101010| loadh2i  |
+|00101011| loadh3i  |
+|00110---| store    |
+|001110-?| out      |
+|000001-?| in       |
 |01000---| jal      |
 |01001---| -        |
-|01001001| brz      |
-|01001010| brnz     |
-|01001011| brp      |
-|01001100| brn      |
 |01010---| ldaddr   |
-|01100---| load ind |
-|01110---| store ind|
-|10000nnn| br       |
-|10001nnn| brz      |
-|10010nnn| brnz     |
-|10011nnn| brp      |
-|10100nnn| brn      |
+|01100--0| loadind  |
+|01100--1| loadindbu|
+|01110--0| storeind |
+|01110--1| storeindb|
+|1000nnnn| br       |
+|1001nnnn| brz      |
+|1010nnnn| brnz     |
+|1011nnnn| brp      |
+|1100nnnn| brn      |
 |11111111| scall    |
 +--------+----------+
 \end{verbatim}
@@ -328,14 +336,6 @@ Not all instruction bits are currently used (unused are marked with -). Bit 0 se
 \section{Comments}
 
 loadh makes only sense for immediate values. For 32 bits we just need two more immediate loads, could simply by as follows:
-
-\begin{verbatim}
-+--------+----------+
-|0010100i| loadh    |
-|0010101i| loadh2   |
-|0010110i| loadh3   |
-+--------+----------+
-\end{verbatim}
 
 Can easily be extended to 64 bits when ignoring the immediate bit. Load function from ALU could be dropped.
 
@@ -575,7 +575,7 @@ We plan to use Leros for experiments with a ring-based network-on-chip~\cite{jop
 
 We started with a simple assembler written in Java with some reuse of code from the JOP project~\cite{jop:jnl:jsa2007}. Later we adapted the lexer and grammar tool ANTLR~\cite{antlr:1995} for the assembler. Using the parser generator ANTLR might sound like an overkill for the implementation of an assembler. However, the simplicity of defining a grammar enables the implementation of a  higher level assembler, which can simplify assembler programming. Furthermore, we started to retarget the muvium Java compiler\footnote{\url{http://www.muvium.com/}} for Leros. Muvium is optimized to compile simplified Java for resource-constrained microcontrollers, such as Microchip processors. Therefore, this compiler is an ideal tool for Leros.
 
-\subsection{The Leros Regression Test Framework
+\subsection{The Leros Regression Test Framework}
 
 \section{Evaluation}
 \label{sec:eval}
