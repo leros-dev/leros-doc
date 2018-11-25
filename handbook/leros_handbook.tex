@@ -517,19 +517,17 @@ define dso_local i32 @_Z4trianglei(i32) {
 \chapter{Compiler}
 
 We have adapted the LLVM compiler~\cite{llvm:2004} for Leros, which is currently hosted at:
-\url{https://github.com/mortbopet/leros-llvm}. This compiler is built via:
+\url{https://github.com/leros-dev/leros-llvm}. This compiler is built via:
 
 \begin{verbatim}
 ./build.sh
 \end{verbatim}
+The build script is directory-agnostic and can be run from anywhere. The build script will build the project in \texttt{build-leros-llvm}, which is placed next to the \texttt{leros-llvm} folder.\\
 
-which generates following folder for the binaries:
+During the build process the build script will check out the \texttt{leros-lib} repository and place it next to the \texttt{leros-llvm} folder, wherein after finished compilation of the compiler, \texttt{crt0.leros.o} (containing the leros \texttt{\_start} procedure) as well as the Leros runtime library will be compiled and copied to the \texttt{build-leros-llvm/lib/clang/\$\{clang version\}/lib/} folder.
 
-\begin{verbatim}
-../build-leros-llvm-Clang-Release
-\end{verbatim}
-
-add \code{path-to-repo/build-leros-llvm-Clang-Release/bin} to your \code{PATH} variable.
+\texttt{build-leros-llvm/bin} will contain the LLVM binaries.\\
+Add \code{path-to-repo/build-leros-llvm/bin} to your \code{PATH} variable.
 
 \martin{Cross compiler binaries usually start with the processor name (e.g. riscv-... or patmo-clan)
 to be able to distinguish between different versions. Maybe you can do so as well.}
