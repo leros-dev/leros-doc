@@ -518,14 +518,18 @@ define dso_local i32 @_Z4trianglei(i32) {
 
 We have adapted the LLVM compiler~\cite{llvm:2004} for Leros, which is currently hosted at:
 \url{https://github.com/leros-dev/leros-llvm}.\\
-To build the toolchain clone the leros-llvm repository with the `--recursive` option. This will include `leros-clang` and `leros-lld` into the `leros-llvm` folder:    
-`git clone https://github.com/leros-dev/leros-llvm.git --recursive`
+To build the compiler and related tools, clone the \texttt{leros-llvm} repository:      
 
-After cloning the repositories, the toolchain is built via. the included build-script in `leros-llvm`.
+\begin{verbatim}
+git clone https://github.com/leros-dev/leros-llvm.git
+\end{verbatim}
+
+After cloning the repositories, the toolchain is built via. the included build script in `leros-llvm`.
 \begin{verbatim}
 ./leros-llvm/build.sh
 \end{verbatim}
-The build script is directory-agnostic and can be run from anywhere. The build script will build the project in \texttt{build-leros-llvm}, which is placed next to the \texttt{leros-llvm} folder.\\
+
+The build script is directory-agnostic and can be run from anywhere. The build script will build the project in \texttt{build-leros-llvm}, which is placed next to the \texttt{leros-llvm} folder. The script will initialize and pull the submodules for \texttt{leros-clang} and \texttt{leros-lld}.\\
 
 During the build process the build script will check out the \texttt{leros-lib} repository and place it next to the \texttt{leros-llvm} folder, wherein after finished compilation of the compiler, \texttt{crt0.leros.o} (containing the leros \texttt{\_start} procedure) as well as the Leros runtime library will be compiled and copied to the \texttt{build-leros-llvm/lib/clang/\$\{clang version\}/lib/} folder.
 
