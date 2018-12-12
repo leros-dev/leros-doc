@@ -517,10 +517,13 @@ define dso_local i32 @_Z4trianglei(i32) {
 \chapter{Compiler}
 
 We have adapted the LLVM compiler~\cite{llvm:2004} for Leros, which is currently hosted at:
-\url{https://github.com/leros-dev/leros-llvm}. This compiler is built via:
+\url{https://github.com/leros-dev/leros-llvm}.\\
+To build the toolchain clone the leros-llvm repository with the `--recursive` option. This will include `leros-clang` and `leros-lld` into the `leros-llvm` folder:    
+`git clone https://github.com/leros-dev/leros-llvm.git --recursive`
 
+After cloning the repositories, the toolchain is built via. the included build-script in `leros-llvm`.
 \begin{verbatim}
-./build.sh
+./leros-llvm/build.sh
 \end{verbatim}
 The build script is directory-agnostic and can be run from anywhere. The build script will build the project in \texttt{build-leros-llvm}, which is placed next to the \texttt{leros-llvm} folder.\\
 
